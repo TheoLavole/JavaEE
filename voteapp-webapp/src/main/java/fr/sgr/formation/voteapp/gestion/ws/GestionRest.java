@@ -42,7 +42,7 @@ public class GestionRest {
 	 * @throws TraceInvalideException
 	 */
 	@RequestMapping(value = "/mdp", method = RequestMethod.GET)
-	public void nouveauMdp(@PathVariable String login) throws GestionInvalideException, TraceInvalideException {
+	public String nouveauMdp(@PathVariable String login) throws GestionInvalideException, TraceInvalideException {
 		try {
 			Utilisateur utilisateur = gestionServices.rechercherParLogin(login);
 			if (utilisateur != null) {
@@ -54,19 +54,21 @@ public class GestionRest {
 				trace.setEmail(utilisateur.getEmail());
 				trace.setResultat("SUCCESS");
 				traceServices.creer(trace);
-
+				return ("Un nouveau mot de passe a été envoyé à l'adresse mail : "+utilisateur.getEmail());
 			} else {
 				log.info("=====> Récupération de mdp pour un utilisateur inconnu : {}.", login);
 				throw new GestionInvalideException(ErreurGestion.UTILISATEUR_INCONNU);
 			}
 		} catch (GestionInvalideException e) {
+			log.info("=====> {}",e.getErreur().getMessage());
 			Trace trace = new Trace();
 			trace.setAction("Renouvellement mot de passe");
 			trace.setDate(new Date());
-			trace.setEmail(null);
+			trace.setEmail("MISSING");
 			trace.setResultat("FAIL");
 			trace.setDescription(e.getErreur().getMessage());
 			traceServices.creer(trace);
+			return (e.getErreur().getMessage());
 		}
 	}
 
@@ -118,7 +120,7 @@ public class GestionRest {
 				Trace trace = new Trace();
 				trace.setAction("Modification utilisateur");
 				trace.setDate(new Date());
-				trace.setEmail(null);
+				trace.setEmail("MISSING");
 				trace.setResultat("FAIL");
 				trace.setDescription(e.getErreur().getMessage());
 				traceServices.creer(trace);

@@ -227,9 +227,9 @@ public class UtilisateursServices {
 			if (utilisateur != null) {
 				log.info("=====> Utilisateur supprimé :{}",utilisateur);
 				entityManager.remove(utilisateur);
-				return "<p>Utilisateur de login "+login+" supprimé</p>";
+				return "<p>Utilisateur "+login+" supprimé</p>";
 			} else {
-				log.info("=====> Aucun utilisateur de login {} a supprimer.", login);
+				log.info("=====> Aucun utilisateur {} a supprimer.", login);
 				throw new UtilisateurInvalideException(ErreurUtilisateur.LOGIN_OBLIGATOIRE);
 			}
 		}

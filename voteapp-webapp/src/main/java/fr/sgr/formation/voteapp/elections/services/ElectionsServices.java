@@ -99,22 +99,21 @@ public class ElectionsServices {
 						query.setParameter("1", "%" + recherche + "%");
 						query.setParameter("2", gerant);
 					} else {
-						query = entityManager.createNativeQuery(
-								"SELECT * FROM Election where titre like :1 and gerant= :2");
+						query = entityManager
+								.createNativeQuery("SELECT * FROM Election where titre like :1 and gerant= :2");
 						query.setParameter("1", "%" + recherche + "%");
 						query.setParameter("2", gerant);
 					}
 				} else {
-					query = entityManager.createNativeQuery(
-							"SELECT * FROM Election where titre like :1 and gerant= :2");
+					query = entityManager
+							.createNativeQuery("SELECT * FROM Election where titre like :1 and gerant= :2");
 					query.setParameter("1", "%" + recherche + "%");
 					query.setParameter("2", gerant);
 				}
 			} else if (cloture != null) {
 				if (cloture.equals("oui")) {
-					query = entityManager
-							.createNativeQuery(
-									"SELECT * FROM Election where titre like :1 and date_Cloture IS NOT NULL");
+					query = entityManager.createNativeQuery(
+							"SELECT * FROM Election where titre like :1 and date_Cloture IS NOT NULL");
 					query.setParameter("1", "%" + recherche + "%");
 				} else if (cloture.equals("non")) {
 					query = entityManager
@@ -198,4 +197,13 @@ public class ElectionsServices {
 		return null;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void supprimer(Election election) throws ElectionInvalideException {
+		log.info("=====> Supression de l'election : {}.", election);
+		if (election == null) {
+			throw new ElectionInvalideException(ErreurElection.ELECTION_OBLIGATOIRE);
+		} else {
+			entityManager.remove(election);
+		}
+	}
 }

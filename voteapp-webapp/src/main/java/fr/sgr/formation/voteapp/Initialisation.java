@@ -89,10 +89,14 @@ public class Initialisation {
 			dateNaissance.setDate(indexJour);
 			ProfilsUtilisateur profil1 = ProfilsUtilisateur.UTILISATEUR;
 			ProfilsUtilisateur profil2 = ProfilsUtilisateur.ADMINISTRATEUR;
+			ProfilsUtilisateur profil3 = ProfilsUtilisateur.GERANT;
 			ArrayList<ProfilsUtilisateur> profils = new ArrayList<ProfilsUtilisateur>();
 			profils.add(profil1);
 			if (indexProfil > 0.8){
 				profils.add(profil2);
+				if (indexProfil > 0.95){
+					profils.add(profil3);
+				}
 			}
 			String photo = "http://www.hebus.com/image-"+indexImage+".html";
 			Utilisateur toto = new Utilisateur();

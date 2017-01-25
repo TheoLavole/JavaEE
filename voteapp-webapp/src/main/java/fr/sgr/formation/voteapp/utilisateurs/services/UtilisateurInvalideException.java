@@ -31,7 +31,8 @@ public class UtilisateurInvalideException extends Exception {
 		PROFIL_OBLIGATOIRE("L'utilisateur n'a aucun profil."),
 		MAIL_EXISTANT("Un autre utilisateur utilise déjà ce mail."),
 		ADRESSE_OBLIGATOIRE("Une adresse est nécessaire"),
-		ADMIN_ONLY("Seul un administrateur peut faire cette action");
+		ADMIN_ONLY("Seul un administrateur peut faire cette action"),
+		UTILISATEUR_INCONNU("Aucun utilisateur n'est connu avec ce login");
 
 		@Getter
 		public String message;

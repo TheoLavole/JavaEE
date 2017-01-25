@@ -57,18 +57,29 @@ public class UtilisateursRest {
 				}
 			} else {
 				log.info("=====> Login invalide");
-				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_OBLIGATOIRE);
+				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_INCONNU);
 			}
 		} catch (UtilisateurInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-			Trace trace = new Trace();
-			trace.setAction("Création utilisateur");
-			trace.setDate(new Date());
-			trace.setEmail(utilisateur2.getEmail());
-			trace.setResultat("FAIL");
-			trace.setDescription(e.getErreur().getMessage());
-			traceServices.creer(trace);
-			return e.getMessage();
+			if (utilisateur2 != null){
+				Trace trace = new Trace();
+				trace.setAction("Création utilisateur");
+				trace.setDate(new Date());
+				trace.setEmail(utilisateur2.getEmail());
+				trace.setResultat("FAIL");
+				trace.setDescription(e.getErreur().getMessage());
+				traceServices.creer(trace);
+			} else {
+				Trace trace = new Trace();
+				trace.setAction("Création utilisateur");
+				trace.setDate(new Date());
+				trace.setEmail("MISSING");
+				trace.setResultat("FAIL");
+				trace.setDescription(e.getErreur().getMessage());
+				traceServices.creer(trace);
+			}
+			log.info("=====> {}",e.getErreur().getMessage());
+			return e.getErreur().getMessage();
 		}
 	}
 
@@ -103,18 +114,29 @@ public class UtilisateursRest {
 				}
 			} else {
 				log.info("=====> Login invalide");
-				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_OBLIGATOIRE);
+				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_INCONNU);
 			}
 		} catch (UtilisateurInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-			Trace trace = new Trace();
-			trace.setAction("Création utilisateur");
-			trace.setDate(new Date());
-			trace.setEmail(utilisateur2.getEmail());
-			trace.setResultat("SUCCESS");
-			trace.setDescription(e.getErreur().getMessage());
-			traceServices.creer(trace);
-			return e.getMessage();
+			if (utilisateur2 != null){
+				Trace trace = new Trace();
+				trace.setAction("Suppression utilisateur");
+				trace.setDate(new Date());
+				trace.setEmail(utilisateur2.getEmail());
+				trace.setResultat("FAIL");
+				trace.setDescription(e.getErreur().getMessage());
+				traceServices.creer(trace);
+			} else {
+				Trace trace = new Trace();
+				trace.setAction("Suppression utilisateur");
+				trace.setDate(new Date());
+				trace.setEmail("MISSING");
+				trace.setResultat("FAIL");
+				trace.setDescription(e.getErreur().getMessage());
+				traceServices.creer(trace);
+			}
+			log.info("=====> {}",e.getErreur().getMessage());
+			return e.getErreur().getMessage();
 		}
 	}
 
@@ -142,17 +164,27 @@ public class UtilisateursRest {
 				return utilisateur;
 			} else {
 				log.info("=====> Login invalide");
-				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_OBLIGATOIRE);
+				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_INCONNU);
 			}
 		} catch (UtilisateurInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-			Trace trace = new Trace();
-			trace.setAction("Consultation utilisateur");
-			trace.setDate(new Date());
-			trace.setEmail(utilisateur2.getEmail());
-			trace.setResultat("FAIL");
-			trace.setDescription(e.getErreur().getMessage());
-			traceServices.creer(trace);
+			if (utilisateur2 != null){
+				Trace trace = new Trace();
+				trace.setAction("Consultation utilisateur");
+				trace.setDate(new Date());
+				trace.setEmail(utilisateur2.getEmail());
+				trace.setResultat("FAIL");
+				trace.setDescription(e.getErreur().getMessage());
+				traceServices.creer(trace);
+			} else {
+				Trace trace = new Trace();
+				trace.setAction("Consultation utilisateur");
+				trace.setDate(new Date());
+				trace.setEmail("MISSING");
+				trace.setResultat("FAIL");
+				trace.setDescription(e.getErreur().getMessage());
+				traceServices.creer(trace);
+			}
 			return null;
 		}
 	}
