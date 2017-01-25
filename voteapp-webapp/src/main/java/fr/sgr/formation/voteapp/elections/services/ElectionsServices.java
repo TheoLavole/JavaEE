@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.sgr.formation.voteapp.elections.modele.Election;
 import fr.sgr.formation.voteapp.elections.services.ElectionInvalideException.ErreurElection;
 import fr.sgr.formation.voteapp.notifications.services.NotificationsServices;
+import fr.sgr.formation.voteapp.utilisateurs.modele.Utilisateur;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateurInvalideException;
+import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateursServices;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -25,7 +27,8 @@ public class ElectionsServices {
 
 	@Autowired
 	private ValidationElectionServices validationServices;
-
+	@Autowired
+	private UtilisateursServices utilisateursServices;
 	@Autowired
 	private NotificationsServices notificationsServices;
 
@@ -44,6 +47,9 @@ public class ElectionsServices {
 			throw new ElectionInvalideException(ErreurElection.ELECTION_EXISTANT);
 		}
 
+		Utilisateur gerant = utilisateursServices.rechercherParLogin(loginGerant);
+		election.setGerant(gerant);
+		
 		/**
 		 * Validation de l'election: lève une exception si l'election est
 		 * invalide.
