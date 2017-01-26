@@ -171,6 +171,41 @@ public class ElectionsServices {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param loginElection
+	 * @param modalite
+	 * @return
+	 * @throws ElectionInvalideException
+	 */
+	public int resultat(String loginElection, String modalite) throws ElectionInvalideException {
+		if (loginElection.equals(null)) {
+			throw new ElectionInvalideException(ErreurElection.ELECTION_OBLIGATOIRE);
+		}
+		if (modalite.equals(null)) {
+			return 0;
+		}
+		if (rechercherParLogin(loginElection) == null) {
+			throw new ElectionInvalideException(ErreurElection.ELECTION_INEXISTANT);
+		}
+
+		Query query = null;
+		if (modalite.toLowerCase().equals(("oui").toLowerCase())) {
+			query = entityManager.createNativeQuery(
+					"SELECT count(*) FROM Vote where id_election= :1 and vote='oui'");
+			query.setParameter("1", loginElection);
+		} else if (modalite.toLowerCase().equals(("non").toLowerCase())) {
+			query = entityManager.createNativeQuery(
+					"SELECT count(*) FROM Vote where id_election= :1 and vote='non'");
+			query.setParameter("1", loginElection);
+		} else {
+			query = entityManager.createNativeQuery(
+					"SELECT count(*) FROM Vote where id_election= :1 ");
+			query.setParameter("1", loginElection);
+		}
+		return Integer.parseInt(query.getSingleResult().toString());
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void supprimer(Election election) throws ElectionInvalideException {
 		log.info("=====> Supression de l'election : {}.", election);

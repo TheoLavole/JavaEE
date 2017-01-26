@@ -30,7 +30,8 @@ public class ElectionInvalideException extends Exception {
 		ELECTION_CLOTURE("Election déja cloturé."),
 		DATE_CLOTURE_OBLIGATOIRE("Date de cloture obligatoire"),
 		GERANT_ONLY("Seul un gérant peut créer une élection"),
-		LOGIN_INCONNU("Login inconnu");
+		LOGIN_INCONNU("Login inconnu"),
+		GERANT_RESULTAT("Seul le gérant associé à cette élection peut visualiser le résultat");
 		
 		@Getter
 		public String message;
