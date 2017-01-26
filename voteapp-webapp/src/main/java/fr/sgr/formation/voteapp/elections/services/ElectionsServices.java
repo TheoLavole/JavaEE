@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.sgr.formation.voteapp.elections.modele.Election;
 import fr.sgr.formation.voteapp.elections.services.ElectionInvalideException.ErreurElection;
 import fr.sgr.formation.voteapp.notifications.services.NotificationsServices;
+import fr.sgr.formation.voteapp.trace.modele.Trace;
 import fr.sgr.formation.voteapp.utilisateurs.modele.Utilisateur;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateurInvalideException;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateursServices;
@@ -49,7 +50,7 @@ public class ElectionsServices {
 
 		Utilisateur gerant = utilisateursServices.rechercherParLogin(loginGerant);
 		election.setGerant(gerant);
-		
+
 		/**
 		 * Validation de l'election: lève une exception si l'election est
 		 * invalide.
@@ -86,88 +87,55 @@ public class ElectionsServices {
 		return rechercherParLogin(loginElection);
 	}
 
-	public Collection<Election> findAllElection(String loginUtilisateur, String recherche, String gerant,
-			String cloture) throws UtilisateurInvalideException {
-		log.info("=====> liste des elections : {}.");
-		validationServices.validerUtilisateur(loginUtilisateur);
-		Query query = null;
+	public String[] findAllElection(String loginUtilisateur, String recherche, String gerant, String cloture)
+			throws UtilisateurInvalideException {
+		log.info("=====> liste des élections");
+
+		String order = "";
+		boolean hasSomething = false;
 		if (recherche != null) {
+			order += " WHERE LCASE(TITRE) LIKE '%" + recherche.toLowerCase().trim() + "%'";
+			hasSomething = true;
+		}
+		if (gerant != null && hasSomething) {
+			order += " AND LCASE(GERANT) LIKE '%" + gerant.toLowerCase().trim() + "%'";
+		} else {
 			if (gerant != null) {
-				if (cloture != null) {
-					if (cloture.equals("oui")) {
-						query = entityManager.createNativeQuery(
-								"SELECT * FROM Election where titre like :1 and gerant= :2 and date_Cloture IS NOT NULL");
-						query.setParameter("1", "%" + recherche + "%");
-						query.setParameter("2", gerant);
-					} else if (cloture.equals("non")) {
-						query = entityManager.createNativeQuery(
-								"SELECT * FROM Election where titre like :1 and gerant= :2 and date_Cloture IS NULL");
-						query.setParameter("1", "%" + recherche + "%");
-						query.setParameter("2", gerant);
-					} else {
-						query = entityManager
-								.createNativeQuery("SELECT * FROM Election where titre like :1 and gerant= :2");
-						query.setParameter("1", "%" + recherche + "%");
-						query.setParameter("2", gerant);
-					}
-				} else {
-					query = entityManager
-							.createNativeQuery("SELECT * FROM Election where titre like :1 and gerant= :2");
-					query.setParameter("1", "%" + recherche + "%");
-					query.setParameter("2", gerant);
-				}
-			} else if (cloture != null) {
-				if (cloture.equals("oui")) {
-					query = entityManager.createNativeQuery(
-							"SELECT * FROM Election where titre like :1 and date_Cloture IS NOT NULL");
-					query.setParameter("1", "%" + recherche + "%");
-				} else if (cloture.equals("non")) {
-					query = entityManager
-							.createNativeQuery("SELECT * FROM Election where titre like :1 and date_Cloture IS NULL");
-					query.setParameter("1", "%" + recherche + "%");
-				} else {
-					query = entityManager.createNativeQuery("SELECT * FROM Election where titre like :1");
-					query.setParameter("1", "%" + recherche + "%");
-				}
-
-			} else {
-				query = entityManager.createNativeQuery("SELECT * FROM Election where titre like :1");
-				query.setParameter("1", "%" + recherche + "%");
+				order += " WHERE LCASE(GERANT) LIKE '%" + gerant.toLowerCase().trim() + "%'";
+				hasSomething = true;
 			}
-
-		} else if (gerant != null) {
+		}
+		if (cloture != null && hasSomething) {
+			if (cloture.equals("oui")) {
+				order += " AND DATE_CLOTURE IS NOT NULL";
+			} else if (cloture.equals("non")) {
+				order += " AND DATE_CLOTURE IS NULL";
+			}
+		} else {
 			if (cloture != null) {
 				if (cloture.equals("oui")) {
-					query = entityManager
-							.createNativeQuery("SELECT * FROM Election where gerant= :1 and date_Cloture IS NOT NULL");
-					query.setParameter("1", gerant);
+					order += " WHERE DATE_CLOTURE IS NOT NULL";
 				} else if (cloture.equals("non")) {
-					query = entityManager
-							.createNativeQuery("SELECT * FROM Election where gerant= :1 and date_Cloture IS NULL");
-					query.setParameter("1", gerant);
-				} else {
-					query = entityManager.createNativeQuery("SELECT * FROM Election where gerant= :1");
-					query.setParameter("1", gerant);
+					order += " WHERE DATE_CLOTURE IS NULL";
 				}
-
-			} else {
-				query = entityManager.createNativeQuery("SELECT * FROM Election where gerant= :1");
-				query.setParameter("1", gerant);
 			}
-
-		} else if (cloture != null) {
-			if (cloture.equals("oui")) {
-				query = entityManager.createNativeQuery("SELECT * FROM Election where date_Cloture IS NOT NULL");
-			} else if (cloture.equals("non")) {
-				query = entityManager.createNativeQuery("SELECT * FROM Election where date_Cloture IS NULL");
-			} else {
-				query = entityManager.createNativeQuery("SELECT * FROM Election");
-			}
-
-		} else {
-			query = entityManager.createNativeQuery("SELECT * FROM Election");
 		}
-		return (Collection<Election>) query.getResultList();
+
+		String order2 = "SELECT * FROM ELECTION";
+		order = order2 + order;
+
+		log.info("=====> {}", order);
+		Query query = entityManager.createNativeQuery(order, Election.class);
+
+		int nbRetour = query.getResultList().size();
+		String[] res = new String[nbRetour];
+		for (int i = 0; i < nbRetour; i++) {
+			Election myTest = (Election) query.getResultList().get(i);
+			res[i] = "<tr><td>" + myTest.getLoginElection() + "</td>" + "<td>" + myTest.getTitre() + "</td>" + "<td>"
+					+ myTest.getDescription() + "</td>" + "<td>" + myTest.getGerant().getLogin() + "</td><td>"
+					+ myTest.getDateCloture() + "</td></tr>";
+		}
+		return res;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

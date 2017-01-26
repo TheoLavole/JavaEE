@@ -47,7 +47,6 @@ public class ElectionRest {
 					log.info("=====> Création ou modification de l'election de login {}: {}.", loginElection, election);
 					election.setLoginElection(loginElection);
 					electionsServices.creer(election, login);
-
 					Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
 					Trace trace = new Trace();
 					trace.setAction("Création élection");
