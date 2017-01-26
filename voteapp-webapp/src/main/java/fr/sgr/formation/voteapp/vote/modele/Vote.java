@@ -1,7 +1,7 @@
 package fr.sgr.formation.voteapp.vote.modele;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,21 +10,16 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(of = { "loginElection" })
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
 public class Vote {
-	@Id
-//	@ManyToOne
-//	@JoinColumn(name = "gerant")
-//	private Election election;
-//
-//	@Id
-//	@ManyToOne
-//	@JoinColumn(name = "gerant")
-//	private Utilisateur electeur;
+	@EmbeddedId
+	private VotePK voteID;
 
-	private String nomVote;
+	private String vote;
+
 }
