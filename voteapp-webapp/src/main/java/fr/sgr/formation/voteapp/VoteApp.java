@@ -14,11 +14,6 @@ public class VoteApp {
 	public Servlet additionnerServlet() {
 		return new AdditionnerServlet();
 	}
-
-//	@Bean(name = "additionner")
-//	public Servlet additionnerServlet() {
-//		return new AdditionnerServlet();
-//	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(VoteApp.class, args);

@@ -35,9 +35,9 @@ public class GestionRest {
 	private TraceServices traceServices;
 
 	/**
-	 * TODO envoyer un vrai mail ?
-	 * 
+	 * Méthode pour récupérer un mot de passe perdu
 	 * @param login
+	 * @return Qtring Une chaine de caractères
 	 * @throws GestionInvalideException
 	 * @throws TraceInvalideException
 	 */
@@ -256,6 +256,21 @@ public class GestionRest {
 		}
 	}
 
+	/**
+	 * Méthode pour afficher les traces
+	 * @param login
+	 * @param email
+	 * @param nom
+	 * @param action
+	 * @param dateDebut
+	 * @param dateFin
+	 * @param nb
+	 * @param page
+	 * @return String Un tableau html de traces
+	 * @throws GestionInvalideException
+	 * @throws TraceInvalideException
+	 * @throws ParseException
+	 */
 	@RequestMapping(value = "/trace", method = RequestMethod.GET)
 	public String afficherTraces(@PathVariable("login") String login, @RequestParam(required = false) String email,
 			@RequestParam(required = false) String nom, @RequestParam(required = false) String action,

@@ -23,6 +23,14 @@ public class ElectionClotureREST {
 	@Autowired
 	private ElectionsServices electionsServices;
 
+	/**
+	 * Méthode pour cloturer une élection
+	 * @param login
+	 * @param loginElection
+	 * @param date
+	 * @throws ElectionInvalideException
+	 * @throws ParseException
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public void cloture(@PathVariable("login") String login, @PathVariable("loginElection") String loginElection,
 			@RequestParam(required = true) String date)

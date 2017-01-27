@@ -37,6 +37,13 @@ public class ElectionsServices {
 	private EntityManager entityManager;
 
 	@Transactional(propagation = Propagation.REQUIRED)
+	/**
+	 * Méthode pour créer une élection et le vérifier
+	 * @param election
+	 * @param loginGerant
+	 * @return Election l'élection créée
+	 * @throws ElectionInvalideException
+	 */
 	public Election creer(Election election, String loginGerant) throws ElectionInvalideException {
 		log.info("=====> Création de l'election : {}.", election);
 
@@ -66,6 +73,14 @@ public class ElectionsServices {
 		return election;
 	}
 
+	/** 
+	 * Méthode pour cloturer une élection
+	 * @param loginElection
+	 * @param dateCloture
+	 * @param loginGerant
+	 * @return Election l'élection cloturée
+	 * @throws ElectionInvalideException
+	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Election cloturer(String loginElection, Date dateCloture, String loginGerant)
 			throws ElectionInvalideException {
@@ -87,6 +102,15 @@ public class ElectionsServices {
 		return rechercherParLogin(loginElection);
 	}
 
+	/**
+	 * Méthode pour récupérer toutes les élections
+	 * @param loginUtilisateur
+	 * @param recherche
+	 * @param gerant
+	 * @param cloture
+	 * @return Le contenu d'un tableau html contenant les résultats de la recherche
+	 * @throws UtilisateurInvalideException
+	 */
 	public String[] findAllElection(String loginUtilisateur, String recherche, String gerant, String cloture)
 			throws UtilisateurInvalideException {
 		log.info("=====> liste des élections");
@@ -139,6 +163,16 @@ public class ElectionsServices {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
+	/**
+	 * Méthode pour modifier une élection
+	 * @param loginElection
+	 * @param loginGerant
+	 * @param titre
+	 * @param description
+	 * @param image
+	 * @return Election l'élection modifiée
+	 * @throws ElectionInvalideException
+	 */
 	public Election modifier(String loginElection, String loginGerant, String titre, String description, String image)
 			throws ElectionInvalideException {
 		log.info("=====> modification de l'election : {}.", loginElection);
@@ -161,6 +195,11 @@ public class ElectionsServices {
 		return rechercherParLogin(loginElection);
 	}
 
+	/**
+	 * Méthode pour chercher une élection par le login de l'élection
+	 * @param loginElection
+	 * @return Election l'élection si elle existe, null sinon
+	 */
 	public Election rechercherParLogin(String loginElection) {
 		log.info("=====> Recherche de l'election de login {}.", loginElection);
 
@@ -172,10 +211,10 @@ public class ElectionsServices {
 	}
 
 	/**
-	 * 
+	 * Méthode pour afficher le résultat d'une élection pour une modalité
 	 * @param loginElection
 	 * @param modalite
-	 * @return
+	 * @return int le nombre de votes associés à la modalité dans cette élection
 	 * @throws ElectionInvalideException
 	 */
 	public int resultat(String loginElection, String modalite) throws ElectionInvalideException {
@@ -206,6 +245,11 @@ public class ElectionsServices {
 		return Integer.parseInt(query.getSingleResult().toString());
 	}
 	
+	/**
+	 * Méthode pour supprimer une élection
+	 * @param election
+	 * @throws ElectionInvalideException
+	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void supprimer(Election election) throws ElectionInvalideException {
 		log.info("=====> Supression de l'election : {}.", election);

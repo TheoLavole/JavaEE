@@ -38,6 +38,15 @@ public class ElectionRest {
 	@Autowired
 	private TraceServices traceServices;
 
+	/**
+	 * Méthode pour créer une élection
+	 * @param login Login de l'utilisateur qui créé l'élection
+	 * @param loginElection Login de l'élection à créer
+	 * @param election Election au format JSON à créer
+	 * @return	String Une chaine de caractères expliquant si oui ou non la création a eu lieue et pourquoi
+	 * @throws ElectionInvalideException
+	 * @throws TraceInvalideException
+	 */
 	@RequestMapping(value = "/{loginElection}", method = RequestMethod.PUT)
 	public String creer(@PathVariable("login") String login, @PathVariable("loginElection") String loginElection,
 			@RequestBody Election election) throws ElectionInvalideException, TraceInvalideException {
@@ -89,6 +98,14 @@ public class ElectionRest {
 		}
 	}
 
+	/**
+	 * Méthode pour supprimer une élection
+	 * @param login	Login de l'utilisateur
+	 * @param loginElection Login de l'élection
+	 * @return String Une chaine de caractères expliquant si la suppression a eu lieue ou non et pourquoi
+	 * @throws ElectionInvalideException
+	 * @throws TraceInvalideException
+	 */
 	@RequestMapping(value = "/{loginElection}", method = RequestMethod.DELETE)
 	public String supprimer(@PathVariable("login") String login, @PathVariable("loginElection") String loginElection)
 			throws ElectionInvalideException, TraceInvalideException {
@@ -146,6 +163,13 @@ public class ElectionRest {
 		}
 	}
 
+	/**
+	 * Méthode pour afficher une élection
+	 * @param login Login de l'utilisateur
+	 * @param loginElection Login de l'élection à afficher
+	 * @return Election L'élection cherchée
+	 * @throws TraceInvalideException
+	 */
 	@RequestMapping(value = "/{loginElection}", method = RequestMethod.GET)
 	public Election lire(@PathVariable("login") String login, @PathVariable("loginElection") String loginElection) throws TraceInvalideException {
 		try {

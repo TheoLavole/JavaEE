@@ -36,6 +36,15 @@ public class ElectionResultatREST {
 	@Autowired
 	private TraceServices traceServices;
 
+	/**
+	 * Méthode pour afficher le résultat d'une élection
+	 * @param login Login de l'utilisateur
+	 * @param election Login de l'élection
+	 * @return String Une chaine de caractères
+	 * @throws ElectionInvalideException
+	 * @throws TraceInvalideException
+	 * @throws UtilisateurInvalideException
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String lire(@PathVariable("login") String login, @RequestParam(required = false) String election)
 			throws ElectionInvalideException, TraceInvalideException, UtilisateurInvalideException {

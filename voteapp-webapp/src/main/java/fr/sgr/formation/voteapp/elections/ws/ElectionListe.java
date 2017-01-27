@@ -33,6 +33,18 @@ public class ElectionListe {
 	@Autowired
 	private TraceServices traceServices;
 
+	/**
+	 * Méthode pour afficher la liste des élections selon 4 critères
+	 * @param login Login de l'individu qui fait la recherche
+	 * @param recherche Chaine de caractères recherchée dans le login de l'élection
+	 * @param gerant Login du gérant
+	 * @param cloture oui si l'élection est cloturée, non sinon
+	 * @param nb Nombre d'affichages voulus par page
+	 * @param page Index de la page souhaitée
+	 * @return String Une chaine de caractères correspondant à l'intérieur d'un tableau html
+	 * @throws UtilisateurInvalideException
+	 * @throws TraceInvalideException
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String lire(@PathVariable("login") String login,
 			@RequestParam(required = false) String recherche, @RequestParam(required = false) String gerant,

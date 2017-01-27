@@ -20,6 +20,15 @@ public class ElectionGestionREST {
 	@Autowired
 	private ElectionsServices electionsServices;
 
+	/** 
+	 * Méthode pour modifier une élection
+	 * @param login
+	 * @param loginElection
+	 * @param titre
+	 * @param description
+	 * @param image
+	 * @throws ElectionInvalideException
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public void modifier(@PathVariable("login") String login, @RequestParam(required = true) String loginElection,
 			@RequestParam(required = false) String titre, @RequestParam(required = false) String description,
