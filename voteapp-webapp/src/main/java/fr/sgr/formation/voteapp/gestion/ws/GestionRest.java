@@ -329,7 +329,7 @@ public class GestionRest {
 								+ " élément(s).<br/>";
 						Utilisateur utilisateur2 = gestionServices.rechercherParLogin(login);
 						Trace trace = new Trace();
-						trace.setAction("Liste utilisateurs");
+						trace.setAction("Liste traces");
 						trace.setDate(new Date());
 						trace.setEmail(utilisateur2.getEmail());
 						trace.setResultat("SUCCESS");
