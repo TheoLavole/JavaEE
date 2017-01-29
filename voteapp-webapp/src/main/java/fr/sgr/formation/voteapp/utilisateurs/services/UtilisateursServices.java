@@ -97,10 +97,7 @@ public class UtilisateursServices {
 			throw new UtilisateurInvalideException(ErreurUtilisateur.MAIL_EXISTANT);
 		}
 
-		if (utilisateur.getAdresse() == null) {
-			log.info("=====> Adresse manquante");
-			throw new UtilisateurInvalideException(ErreurUtilisateur.ADRESSE_OBLIGATOIRE);
-		} else {
+		if (utilisateur.getAdresse() != null) {
 			if (!rechercherVille(utilisateur.getAdresse().getVille())) {
 				Ville ville = new Ville();
 				ville.setCodePostal(utilisateur.getAdresse().getVille().getCodePostal());
