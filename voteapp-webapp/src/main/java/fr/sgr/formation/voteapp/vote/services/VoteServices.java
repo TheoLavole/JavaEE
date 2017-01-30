@@ -27,6 +27,14 @@ public class VoteServices {
 	@Autowired
 	private EntityManager entityManager;
 
+	/**
+	 * Méthode de persistance des votes
+	 * @param res Valeur du vote
+	 * @param loginElection Login de l'élection
+	 * @param loginElecteur Login de l'électeur
+	 * @return
+	 * @throws VoteInvalideException
+	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Vote creer(String res, String loginElection, String loginElecteur) throws VoteInvalideException {
 		log.info("=====> Création duvote : {}.", res);
@@ -63,6 +71,12 @@ public class VoteServices {
 		return vote;
 	}
 
+	/**
+	 * Méthode pour rechercher un vote dans la base de données
+	 * @param loginElection Login de l'élection
+	 * @param loginElecteur	Login de l'électeur
+	 * @return
+	 */
 	public Vote rechercherParLogin(String loginElection, String loginElecteur) {
 		log.info("=====> Recherche de l'election de login {} {}.", loginElection, loginElecteur);
 

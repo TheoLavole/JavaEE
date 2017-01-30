@@ -1,6 +1,5 @@
 package fr.sgr.formation.voteapp.elections.ws;
 
-import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.sgr.formation.voteapp.elections.modele.Election;
 import fr.sgr.formation.voteapp.elections.services.ElectionsServices;
 import fr.sgr.formation.voteapp.trace.modele.Trace;
 import fr.sgr.formation.voteapp.trace.services.TraceInvalideException;
@@ -38,7 +36,7 @@ public class ElectionListe {
 	 * @param login Login de l'individu qui fait la recherche
 	 * @param recherche Chaine de caractères recherchée dans le login de l'élection
 	 * @param gerant Login du gérant
-	 * @param cloture oui si l'élection est cloturée, non sinon
+	 * @param cloture Booléen égal à oui ui si l'élection est cloturée, non sinon
 	 * @param nb Nombre d'affichages voulus par page
 	 * @param page Index de la page souhaitée
 	 * @return String Une chaine de caractères correspondant à l'intérieur d'un tableau html

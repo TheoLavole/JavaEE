@@ -1,10 +1,5 @@
 package fr.sgr.formation.voteapp.trace.services;
 
-import java.util.Date;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,12 +20,6 @@ public class TraceInvalideException extends Exception {
 	public TraceInvalideException(ErreurTrace erreur) {
 		this.erreur = erreur;
 	}
-
-	private String email;
-	private String action;
-	@Temporal(TemporalType.DATE)
-	private Date date;
-	private String resultat;
 	
 	public enum ErreurTrace {
 		TRACE_OBLIGATOIRE("La trace est obligatoire pour effectuer l'opération."),

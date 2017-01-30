@@ -14,8 +14,7 @@ public class VotePK implements Serializable {
 	@Column(name = "id_electeur")
 	private String electeurID;
 
-	public VotePK() {
-	}
+	public VotePK(){}
 
 	@Override
 	public boolean equals(Object obj) {

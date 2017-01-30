@@ -22,11 +22,11 @@ public class ElectionGestionREST {
 
 	/** 
 	 * Méthode pour modifier une élection
-	 * @param login
-	 * @param loginElection
-	 * @param titre
-	 * @param description
-	 * @param image
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @param loginElection	Login de l'élection
+	 * @param titre	Titre de l'élection que l'on souhaite modifier
+	 * @param description Description que l'on souhaite modifier
+	 * @param image URL de l'image que l'on souhaite modifier
 	 * @throws ElectionInvalideException
 	 */
 	@RequestMapping(method = RequestMethod.PUT)

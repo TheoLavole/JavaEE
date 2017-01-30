@@ -1,12 +1,9 @@
 package fr.sgr.formation.voteapp;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -39,6 +36,7 @@ public class Initialisation {
 	@Autowired
 	private TraceServices traceServices;
 
+	@SuppressWarnings("deprecation")
 	@PostConstruct
 	@Transactional(propagation = Propagation.REQUIRED)
 	/**

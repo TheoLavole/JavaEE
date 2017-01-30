@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import fr.sgr.formation.voteapp.elections.modele.Election;
 import fr.sgr.formation.voteapp.elections.services.ElectionInvalideException.ErreurElection;
 import fr.sgr.formation.voteapp.utilisateurs.modele.ProfilsUtilisateur;
-import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateurInvalideException;
-import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateurInvalideException.ErreurUtilisateur;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateursServices;
 
 @Service
@@ -19,8 +17,8 @@ public class ValidationElectionServices {
 
 	/**
 	 * Méthode pour valider une élection
-	 * @param election
-	 * @param loginGerant
+	 * @param election Election que l'on souhaite valider
+	 * @param loginGerant	Login du gérant de l'élection
 	 * @return boolean true si l'élection et valide, false sinon
 	 * @throws ElectionInvalideException
 	 */
@@ -32,6 +30,7 @@ public class ValidationElectionServices {
 		validerLogin(election);
 		validerTitre(election);
 		validerGerant(loginGerant);
+		validerBonGerant(election,loginGerant);
 		validerDescription(election);
 
 		/** Validation des champs. */
@@ -40,7 +39,7 @@ public class ValidationElectionServices {
 
 	/**
 	 * Méthode pour savoir si le titre d'une élection est valide
-	 * @param election
+	 * @param election Election que l'on souhaite vérifier
 	 * @throws ElectionInvalideException
 	 */
 	private void validerTitre(Election election) throws ElectionInvalideException {
@@ -51,7 +50,7 @@ public class ValidationElectionServices {
 
 	/** 
 	 * Méthode pour savoir si une description est valide
-	 * @param election
+	 * @param election Election que l'on souhaite vérifier
 	 * @throws ElectionInvalideException
 	 */
 	private void validerDescription(Election election) throws ElectionInvalideException {
@@ -62,7 +61,7 @@ public class ValidationElectionServices {
 
 	/**
 	 * Méthode pour savoir si un login est valide
-	 * @param election
+	 * @param election Election que l'on souhaite vérifier
 	 * @throws ElectionInvalideException
 	 */
 	private void validerLogin(Election election) throws ElectionInvalideException {
@@ -73,7 +72,7 @@ public class ValidationElectionServices {
 
 	/**
 	 * Méthode pour savoir si un gérant est valide
-	 * @param loginGerant
+	 * @param loginGerant Login du gérant
 	 * @throws ElectionInvalideException
 	 */
 	private void validerGerant(String loginGerant) throws ElectionInvalideException {
@@ -85,24 +84,13 @@ public class ValidationElectionServices {
 
 	/**
 	 * Méthode pour savoir si le gérant saisi est celui qui a créé l'élection
-	 * @param election
+	 * @param election Election que l'on souhaite vérifier
 	 * @param loginTest
 	 * @throws ElectionInvalideException
 	 */
 	public void validerBonGerant(Election election, String loginTest) throws ElectionInvalideException {
 		if (!(utilisateursServices.rechercherParLogin(loginTest).getLogin()).equals(loginTest)) {
 			throw new ElectionInvalideException(ErreurElection.GERANT_OBLIGATOIRE);
-		}
-	}
-
-	/**
-	 * Méthode pour valider un utilisateur
-	 * @param loginTest
-	 * @throws UtilisateurInvalideException
-	 */
-	public void validerUtilisateur(String loginTest) throws UtilisateurInvalideException {
-		if (utilisateursServices.rechercherParLogin(loginTest) == null) {
-			throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_OBLIGATOIRE);
 		}
 	}
 }

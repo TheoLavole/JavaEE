@@ -35,16 +35,31 @@ public class VoteREST {
 	private ElectionsServices electionsServices;
 	@Autowired
 	private TraceServices traceServices;
-	
+
+	/**
+	 * Méthode pour cloturer un vote
+	 * 
+	 * @param loginElection
+	 *            Login de l'élection
+	 * @param loginElecteur
+	 *            Login de l'électeur
+	 * @param vote
+	 *            Valeur du vote
+	 * @return String Une chaine de caractères présentant le résultat du vote (succès, échec...)
+	 * @throws VoteInvalideException
+	 * @throws TraceInvalideException
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
-	public String cloture(@RequestParam(required = true) String loginElection,
+	public String vote(@RequestParam(required = true) String loginElection,
 			@RequestParam(required = true) String loginElecteur, @RequestParam(required = true) String vote)
 					throws VoteInvalideException, TraceInvalideException {
 		try {
-			if (utilisateursServices.rechercherParLogin(loginElecteur) != null){
-				if (electionsServices.rechercherParLogin(loginElection) != null){
+			if (utilisateursServices.rechercherParLogin(loginElecteur) != null) {
+				if (electionsServices.rechercherParLogin(loginElection) != null) {
 					log.info("=====> Vote en cours {}: {}.", loginElection, loginElecteur);
-					if (vote == null){ vote ="";}
+					if (vote == null) {
+						vote = "";
+					}
 					voteServices.creer(vote, loginElection, loginElecteur);
 					Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(loginElecteur);
 					Trace trace = new Trace();
@@ -54,14 +69,15 @@ public class VoteREST {
 					trace.setResultat("SUCCESS");
 					trace.setDescription("");
 					traceServices.creer(trace);
-					return ("Le vote de l'utilisateur "+loginElecteur+" pour l'élection "+loginElection+" a été enregistré.");
+					return ("Le vote de l'utilisateur " + loginElecteur + " pour l'élection " + loginElection
+							+ " a été enregistré.");
 				} else {
 					throw new ElectionInvalideException(ErreurElection.ELECTION_INEXISTANT);
 				}
 			} else {
 				throw new UtilisateurInvalideException(ErreurUtilisateur.UTILISATEUR_INCONNU);
 			}
-		} catch (ElectionInvalideException e){
+		} catch (ElectionInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(loginElecteur);
 			Trace trace = new Trace();
 			trace.setAction("Vote élection");
@@ -71,7 +87,7 @@ public class VoteREST {
 			trace.setDescription("");
 			traceServices.creer(trace);
 			return e.getErreur().getMessage();
-		} catch (UtilisateurInvalideException e){
+		} catch (UtilisateurInvalideException e) {
 			Trace trace = new Trace();
 			trace.setAction("Vote élection");
 			trace.setDate(new Date());
@@ -80,9 +96,9 @@ public class VoteREST {
 			trace.setDescription("");
 			traceServices.creer(trace);
 			return e.getErreur().getMessage();
-		} catch (VoteInvalideException e){
+		} catch (VoteInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(loginElecteur);
-			if (utilisateur2 == null){
+			if (utilisateur2 == null) {
 				Trace trace = new Trace();
 				trace.setAction("Vote élection");
 				trace.setDate(new Date());
@@ -101,7 +117,7 @@ public class VoteREST {
 			}
 			return e.getErreur().getMessage();
 		}
-		
+
 	}
 
 }

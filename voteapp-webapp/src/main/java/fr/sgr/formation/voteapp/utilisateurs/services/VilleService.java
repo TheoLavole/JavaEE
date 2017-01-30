@@ -16,12 +16,21 @@ public class VilleService {
 	@Autowired
 	private EntityManager entityManager;
 
+	/**
+	 * Méthode de persistance d'une ville
+	 * @param ville Ville que l'on souhaite persister
+	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void creer(Ville ville) {
 		log.info("=====> Ville ajoutée dans la base : {}", ville);
 		entityManager.persist(ville);
 	}
 
+	/**
+	 * Méthode pour rechercher l'identifiant d'une ville en cherchant le nom et le code postal
+	 * @param ville Ville dont on recherche l'id
+	 * @return Id L'identifiant de cette ville saisi dans la base
+	 */
 	public long rechercherIdVille(Ville ville) {
 		log.info("=====> Recherche de la ville {}.", ville);
 		long res = Integer.parseInt(entityManager.createNativeQuery("SELECT ID FROM VILLE WHERE CODE_POSTAL='"

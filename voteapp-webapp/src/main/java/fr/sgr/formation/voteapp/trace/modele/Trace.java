@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import fr.sgr.formation.voteapp.utilisateurs.modele.Ville;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

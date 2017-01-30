@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +31,18 @@ public class UtilisateursRest {
 	@Autowired
 	private TraceServices traceServices;
 
+	/**
+	 * Méthode de création d'un utilisateur
+	 * 
+	 * @param login
+	 *            Login de l'utilisateur à l'origine de l'action
+	 * @param utilisateur
+	 *            Utilisateur que l'on souhaite créer
+	 * @return String Une chaine de caractères précisant le résultat de cette
+	 *         méthode
+	 * @throws UtilisateurInvalideException
+	 * @throws TraceInvalideException
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public String creer(@PathVariable String login, @RequestBody Utilisateur utilisateur)
 			throws UtilisateurInvalideException, TraceInvalideException {
@@ -40,7 +51,7 @@ public class UtilisateursRest {
 				if (utilisateursServices.rechercherParLogin(login).getProfils()
 						.contains(ProfilsUtilisateur.ADMINISTRATEUR)) {
 					Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-					
+
 					utilisateursServices.creer(utilisateur);
 					Trace trace = new Trace();
 					trace.setAction("Création utilisateur");
@@ -61,7 +72,7 @@ public class UtilisateursRest {
 			}
 		} catch (UtilisateurInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-			if (utilisateur2 != null){
+			if (utilisateur2 != null) {
 				Trace trace = new Trace();
 				trace.setAction("Création utilisateur");
 				trace.setDate(new Date());
@@ -78,15 +89,16 @@ public class UtilisateursRest {
 				trace.setDescription(e.getErreur().getMessage());
 				traceServices.creer(trace);
 			}
-			log.info("=====> {}",e.getErreur().getMessage());
+			log.info("=====> {}", e.getErreur().getMessage());
 			return e.getErreur().getMessage();
 		}
 	}
 
 	/**
-	 * TODO
-	 * 
-	 * @param login
+	 * Méthode de suppression d'un utilisateur
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @param loginADel Login de l'utilisateur à supprimer
+	 * @return	String Résultat de l'action
 	 * @throws UtilisateurInvalideException
 	 * @throws TraceInvalideException
 	 */
@@ -118,7 +130,7 @@ public class UtilisateursRest {
 			}
 		} catch (UtilisateurInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-			if (utilisateur2 != null){
+			if (utilisateur2 != null) {
 				Trace trace = new Trace();
 				trace.setAction("Suppression utilisateur");
 				trace.setDate(new Date());
@@ -135,15 +147,15 @@ public class UtilisateursRest {
 				trace.setDescription(e.getErreur().getMessage());
 				traceServices.creer(trace);
 			}
-			log.info("=====> {}",e.getErreur().getMessage());
+			log.info("=====> {}", e.getErreur().getMessage());
 			return e.getErreur().getMessage();
 		}
 	}
 
 	/**
-	 * 
-	 * @param login
-	 * @return
+	 * Méthode de visualisation d'un individu
+	 * @param login Login de l'utilisateur qui souhaite visualiser son profil
+	 * @return utilisateur Les informations du profil de l'utilisateur
 	 * @throws UtilisateurInvalideException
 	 * @throws TraceInvalideException
 	 */
@@ -168,7 +180,7 @@ public class UtilisateursRest {
 			}
 		} catch (UtilisateurInvalideException e) {
 			Utilisateur utilisateur2 = utilisateursServices.rechercherParLogin(login);
-			if (utilisateur2 != null){
+			if (utilisateur2 != null) {
 				Trace trace = new Trace();
 				trace.setAction("Consultation utilisateur");
 				trace.setDate(new Date());

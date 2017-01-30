@@ -16,6 +16,14 @@ public class ValidationVoteServices {
 	@Autowired
 	private ElectionsServices electionsServices;
 
+	/**
+	 * Méthode pour valider un vote
+	 * @param res Vote de l'utilisateur (ex: Oui, Non, Blanc)
+	 * @param loginElection Login de l'élection
+	 * @param loginElecteur Login de l'utilisateur qui vote
+	 * @return Boolean Un booléen qui est égal à true si le vote est valide, false sinon
+	 * @throws VoteInvalideException
+	 */
 	public boolean validerVote(String res, String loginElection, String loginElecteur)
 			throws VoteInvalideException {
 		if (res.equals(null)) {
@@ -36,6 +44,11 @@ public class ValidationVoteServices {
 		return true;
 	}
 
+	/**
+	 * Vérification de l'élection
+	 * @param loginElection Login de l'élection
+	 * @throws VoteInvalideException
+	 */
 	private void validerElection(String loginElection) throws VoteInvalideException {
 		if (electionsServices.rechercherParLogin(loginElection) == null) {
 			throw new VoteInvalideException(ErreurVote.ELECTION_INEXISTANT);
@@ -45,12 +58,22 @@ public class ValidationVoteServices {
 		}
 	}
 
+	/**
+	 * Vérification de l'électeur
+	 * @param loginElecteur Login de l'électeur qui vote
+	 * @throws VoteInvalideException
+	 */
 	private void validerElecteur(String loginElecteur) throws VoteInvalideException {
 		if (utilisateursServices.rechercherParLogin(loginElecteur) == null) {
 			throw new VoteInvalideException(ErreurVote.ELECTEUR_INEXISTANT);
 		}
 	}
 
+	/**
+	 * Vérifier le résultat du vote
+	 * @param vote Valeur du vote
+	 * @throws VoteInvalideException
+	 */
 	private void validerRESVote(String vote) throws VoteInvalideException {
 		if (StringUtils.isBlank(vote)) {
 			throw new VoteInvalideException(ErreurVote.VOTE_OBLIGATOIRE);

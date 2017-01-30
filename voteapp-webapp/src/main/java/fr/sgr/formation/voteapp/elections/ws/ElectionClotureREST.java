@@ -25,9 +25,9 @@ public class ElectionClotureREST {
 
 	/**
 	 * Méthode pour cloturer une élection
-	 * @param login
-	 * @param loginElection
-	 * @param date
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @param loginElection	Login de l'élection
+	 * @param date	Date de cloture de l'élection
 	 * @throws ElectionInvalideException
 	 * @throws ParseException
 	 */

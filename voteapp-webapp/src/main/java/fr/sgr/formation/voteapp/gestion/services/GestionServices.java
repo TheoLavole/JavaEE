@@ -24,16 +24,6 @@ import fr.sgr.formation.voteapp.utilisateurs.modele.Utilisateur;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateurInvalideException;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Sur la création et modification d'un utilisateur : - Vérification des champs
- * obligatoires - Vérification de la validité (longueur) des champs - Appeler un
- * service de notification inscrivant dans la log création ou modification de
- * l'utilisateur Sur la récupération d'un utilisateur Vérification de
- * l'existance de l'utilisateur Retourner l'utilisateur Sur la suppression d'un
- * utilisateur Vérification de l'existance de l'utilisateur Retourner
- * l'utilisateur Appeler un service de notification inscrivant dans la log la
- * suppression de l'utilisateur
- */
 @Service
 @Slf4j
 @Transactional(propagation = Propagation.SUPPORTS)
@@ -44,7 +34,6 @@ public class GestionServices {
 	/** Services de notification des événements. */
 	@Autowired
 	private NotificationsServices notificationsServices;
-
 	@Autowired
 	private EntityManager entityManager;
 
@@ -134,7 +123,7 @@ public class GestionServices {
 	 * 
 	 * @param utilisateur
 	 *            Utilisateur à créer.
-	 * @return Utilisateur créé.
+	 * @return Utilisateur utilisateur créé.
 	 * @throws UtilisateurInvalideException
 	 *             Levée si l'utilisateur est invalide.
 	 */
@@ -213,11 +202,11 @@ public class GestionServices {
 	}
 
 	/**
-	 * Retourne 1 si le mail est déjà utilisé, 0 sinon.
+	 * Rechercher si un utilisateur possède déjà ce mail
 	 * 
 	 * @param mail
-	 *            mail de l'utilisateur.
-	 * @return Retourne 1 si le mail est déjà utilisé, 0 sinon.
+	 *            Mail de l'utilisateur.
+	 * @return Retourne true si le mail est déjà utilisé, false sinon.
 	 */
 	public boolean rechercherMail(String mail) {
 		log.info("=====> Recherche du mail {}.", mail);
@@ -236,13 +225,13 @@ public class GestionServices {
 	}
 
 	/**
-	 * 
-	 * @param login
-	 * @param nom
-	 * @param prenom
-	 * @param ville
-	 * @param profil
-	 * @return
+	 * Méthode pour afficher tous les utilisateurs
+	 * @param login Login de l'utilisateur à l'origine de l'action	
+	 * @param nom Nom recherché
+	 * @param prenom	Prénom recherché
+	 * @param ville	Ville recherchée
+	 * @param profil Profil recherché
+	 * @return Un tableau de String contenant les lignes retournées par la requête mises en forme sous un format tableau html
 	 */
 	public String[] afficherUtilisateurs(String nom, String prenom, String ville, String profil) {
 		log.info("=====> Affichage des utilisateurs");
@@ -299,13 +288,14 @@ public class GestionServices {
 	}
 
 	/**
-	 * 
-	 * @param login
-	 * @param nom
-	 * @param prenom
-	 * @param ville
-	 * @param profil
-	 * @return
+	 * Méthode de recherche et d'affichage des traces 
+	 * @param login Login de l'utilisateur à l'origine de la recherche
+	 * @param nom Nom de l'utilisateur recherché
+	 * @param email Email à l'origine de l'action recherché
+	 * @param action Action recherchée
+	 * @param dateDebut Date de début recherchée, quand l'on souhaite faire une recherche du type "Depuis telle date" ou "Entre le tant et tant, combien..."
+	 * @param dateFin Date de fin, voir dateDebut
+	 * @return String[] Le résultat de la recherche mis en forme en tableau html et contenant une ligne par résultat
 	 * @throws ParseException
 	 */
 	public String[] afficherTraces(String email, String nom, String action, String dateDebut, String dateFin)
@@ -351,7 +341,7 @@ public class GestionServices {
 		}
 
 		String order2 = "SELECT DISTINCT * FROM UTILISATEUR U, TRACE T WHERE U.EMAIL = T.EMAIL";
-		order = order2 + order +" ORDER BY T.DATE";
+		order = order2 + order + " ORDER BY T.DATE";
 		log.info(order);
 		Query query = entityManager.createNativeQuery(order, Trace.class);
 		int nbRetour = query.getResultList().size();

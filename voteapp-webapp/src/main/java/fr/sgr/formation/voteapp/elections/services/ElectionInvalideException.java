@@ -19,6 +19,11 @@ public class ElectionInvalideException extends Exception {
 		this.erreur = erreur;
 	}
 
+	/**
+	 * Enumération des différentes erreurs possibles
+	 * @author adminuser
+	 *
+	 */
 	public enum ErreurElection {
 		ELECTION_OBLIGATOIRE("L'élection est obligatoire pour effectuer l'opération."),
 		GERANT_OBLIGATOIRE("Le gerant de l'election est obligatoire."),

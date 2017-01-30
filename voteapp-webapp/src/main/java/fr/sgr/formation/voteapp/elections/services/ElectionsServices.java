@@ -1,6 +1,5 @@
 package fr.sgr.formation.voteapp.elections.services;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.sgr.formation.voteapp.elections.modele.Election;
 import fr.sgr.formation.voteapp.elections.services.ElectionInvalideException.ErreurElection;
 import fr.sgr.formation.voteapp.notifications.services.NotificationsServices;
-import fr.sgr.formation.voteapp.trace.modele.Trace;
 import fr.sgr.formation.voteapp.utilisateurs.modele.Utilisateur;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateurInvalideException;
 import fr.sgr.formation.voteapp.utilisateurs.services.UtilisateursServices;
@@ -32,25 +30,30 @@ public class ElectionsServices {
 	private UtilisateursServices utilisateursServices;
 	@Autowired
 	private NotificationsServices notificationsServices;
-
 	@Autowired
 	private EntityManager entityManager;
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	/**
 	 * Méthode pour créer une élection et le vérifier
-	 * @param election
-	 * @param loginGerant
+	 * @param election Election à créer
+	 * @param loginGerant Login du gérant
 	 * @return Election l'élection créée
 	 * @throws ElectionInvalideException
 	 */
 	public Election creer(Election election, String loginGerant) throws ElectionInvalideException {
 		log.info("=====> Création de l'election : {}.", election);
 
+		/**
+		 * On vérifie que l'élection n'est pas nulle
+		 */
 		if (election == null) {
 			throw new ElectionInvalideException(ErreurElection.ELECTION_OBLIGATOIRE);
 		}
 
+		/**
+		 * On vérifie que le login spécifié à l'élection n'est pas déjà attribué
+		 */
 		if (rechercherParLogin(election.getLoginElection()) != null) {
 			throw new ElectionInvalideException(ErreurElection.ELECTION_EXISTANT);
 		}
@@ -75,9 +78,9 @@ public class ElectionsServices {
 
 	/** 
 	 * Méthode pour cloturer une élection
-	 * @param loginElection
-	 * @param dateCloture
-	 * @param loginGerant
+	 * @param loginElection Login de l'élection à cloturer
+	 * @param dateCloture Date de cloture de l'élection
+	 * @param loginGerant	Login du gérant de l'élection
 	 * @return Election l'élection cloturée
 	 * @throws ElectionInvalideException
 	 */
@@ -104,10 +107,10 @@ public class ElectionsServices {
 
 	/**
 	 * Méthode pour récupérer toutes les élections
-	 * @param loginUtilisateur
-	 * @param recherche
-	 * @param gerant
-	 * @param cloture
+	 * @param loginUtilisateur Login de l'utilisateur à l'origine de cette méthode
+	 * @param recherche Terme de la recherche
+	 * @param gerant	Login du gérant
+	 * @param cloture	Boolean égal à oui si on souhaite chercher une élection cloturée, non sinon
 	 * @return Le contenu d'un tableau html contenant les résultats de la recherche
 	 * @throws UtilisateurInvalideException
 	 */
@@ -165,11 +168,11 @@ public class ElectionsServices {
 	@Transactional(propagation = Propagation.REQUIRED)
 	/**
 	 * Méthode pour modifier une élection
-	 * @param loginElection
-	 * @param loginGerant
-	 * @param titre
-	 * @param description
-	 * @param image
+	 * @param loginElection Login de l'élection à modifier
+	 * @param loginGerant	Login du gérant 
+	 * @param titre			Titre de l'élection que l'on souhaite modifier
+	 * @param description	Description de l'élection que l'on souhaite modifier
+	 * @param image			URL de l'image
 	 * @return Election l'élection modifiée
 	 * @throws ElectionInvalideException
 	 */
@@ -197,7 +200,7 @@ public class ElectionsServices {
 
 	/**
 	 * Méthode pour chercher une élection par le login de l'élection
-	 * @param loginElection
+	 * @param loginElection Login de l'élection recherchée
 	 * @return Election l'élection si elle existe, null sinon
 	 */
 	public Election rechercherParLogin(String loginElection) {
@@ -212,9 +215,9 @@ public class ElectionsServices {
 
 	/**
 	 * Méthode pour afficher le résultat d'une élection pour une modalité
-	 * @param loginElection
-	 * @param modalite
-	 * @return int le nombre de votes associés à la modalité dans cette élection
+	 * @param loginElection Login de l'élection recherchée
+	 * @param modalite		Modalité recherchée dans cette élection
+	 * @return nbVotes Le nombre de votes associés à la modalité dans cette élection
 	 * @throws ElectionInvalideException
 	 */
 	public int resultat(String loginElection, String modalite) throws ElectionInvalideException {
@@ -247,7 +250,7 @@ public class ElectionsServices {
 	
 	/**
 	 * Méthode pour supprimer une élection
-	 * @param election
+	 * @param election Election que l'on souhaite supprimer
 	 * @throws ElectionInvalideException
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)

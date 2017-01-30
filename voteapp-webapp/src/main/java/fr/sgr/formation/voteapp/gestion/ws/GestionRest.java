@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.sgr.formation.voteapp.gestion.services.GestionInvalideException;
 import fr.sgr.formation.voteapp.gestion.services.GestionInvalideException.ErreurGestion;
+import fr.sgr.formation.voteapp.gestion.services.GestionServices;
 import fr.sgr.formation.voteapp.trace.modele.Trace;
 import fr.sgr.formation.voteapp.trace.services.TraceInvalideException;
 import fr.sgr.formation.voteapp.trace.services.TraceServices;
-import fr.sgr.formation.voteapp.gestion.services.GestionServices;
 import fr.sgr.formation.voteapp.utilisateurs.modele.ProfilsUtilisateur;
 import fr.sgr.formation.voteapp.utilisateurs.modele.Utilisateur;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -36,8 +35,8 @@ public class GestionRest {
 
 	/**
 	 * Méthode pour récupérer un mot de passe perdu
-	 * @param login
-	 * @return Qtring Une chaine de caractères
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @return String Une chaine de caractères présentant le résultat de l'action
 	 * @throws GestionInvalideException
 	 * @throws TraceInvalideException
 	 */
@@ -74,10 +73,9 @@ public class GestionRest {
 
 	/**
 	 * Modifier un utilisateur
-	 * 
-	 * @param login
-	 * @param utilisateur
-	 * @return
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @param utilisateur Utilisateur que l'on souhaite modifier
+	 * @return	String Une chaine de caractère présentant le résultat de l'action
 	 * @throws GestionInvalideException
 	 * @throws TraceInvalideException
 	 */
@@ -141,14 +139,14 @@ public class GestionRest {
 	/**
 	 * Affichage des utilisateurs
 	 * 
-	 * @param login
-	 * @param nom
-	 * @param prenom
-	 * @param ville
-	 * @param profil
-	 * @param nb
-	 * @param page
-	 * @return
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @param nom	Nom recherché
+	 * @param prenom Prénom recherché 
+	 * @param ville Ville recherchée
+	 * @param profil Profil recherché
+	 * @param nb Nombre d'affichages par page
+	 * @param page Numéro de la page que l'on souhaite atteindre
+	 * @return String Un tableau html contenant la liste des utilisateurs vérifiant les paramètres de la recherche et la pagination
 	 * @throws GestionInvalideException
 	 * @throws TraceInvalideException
 	 */
@@ -258,14 +256,14 @@ public class GestionRest {
 
 	/**
 	 * Méthode pour afficher les traces
-	 * @param login
-	 * @param email
-	 * @param nom
-	 * @param action
-	 * @param dateDebut
-	 * @param dateFin
-	 * @param nb
-	 * @param page
+	 * @param login Login de l'utilisateur à l'origine de l'action
+	 * @param email Email recherché
+	 * @param nom	Nom recherché
+	 * @param action 	Action recherchée
+	 * @param dateDebut Date de début pour définir une période
+	 * @param dateFin Date de fin pour définir une période 
+	 * @param nb Nombre d'affichages par page
+	 * @param page Numéro de la page que l'on souhaite visualiser
 	 * @return String Un tableau html de traces
 	 * @throws GestionInvalideException
 	 * @throws TraceInvalideException
